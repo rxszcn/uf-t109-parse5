@@ -239,5 +239,28 @@ function serializeDocumentTypeNode<T extends TreeAdapterTypeMap>(
     node: T['documentType'],
     { treeAdapter }: InternalOptions<T>,
 ): string {
-    return `<!DOCTYPE ${treeAdapter.getDocumentTypeNodeName(node)}>`;
+    // Aligned with the "Serializing a DocumentType node" algorithm of the HTML spec:
+    // https://html.spec.whatwg.org/multipage/parsing.html#serializing-a-doctype
+    let html = `<!DOCTYPE ${treeAdapter.getDocumentTypeNodeName(node)}`;
+
+    const publicId = treeAdapter.getDocumentTypeNodePublicId(node);
+    const systemId = treeAdapter.getDocumentTypeNodeSystemId(node);
+
+    if (publicId) {
+        html += ` PUBLIC "${serializeDoctypeIdentifier(publicId)}"`;
+    } else if (systemId) {
+        html += ' SYSTEM';
+    }
+
+    if (systemId) {
+        html += ` "${serializeDoctypeIdentifier(systemId)}"`;
+    }
+
+    return `${html}>`;
+}
+
+// A DOCTYPE identifier is always quoted with double quotes; any double quote
+// character inside the identifier is escaped as `&quot;`.
+function serializeDoctypeIdentifier(id: string): string {
+    return id.replace(/"/g, '&quot;');
 }

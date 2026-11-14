@@ -118,15 +118,15 @@
     {
         "name": "Doctype with publicId",
         "input": "<!DOCTYPE html PUBLIC \"-//W3C//DTD HTML 4.01//EN\">",
-        "expected": "<!DOCTYPE html><html><head></head><body></body></html>"
+        "expected": "<!DOCTYPE html PUBLIC \"-//W3C//DTD HTML 4.01//EN\"><html><head></head><body></body></html>"
     },
     {
         "name": "Doctype with systemId",
         "input": "<!DOCTYPE html SYSTEM \"http://www.w3.org/DTD/HTML4-strict.dtd\"",
-        "expected": "<!DOCTYPE html><html><head></head><body></body></html>"
+        "expected": "<!DOCTYPE html SYSTEM \"http://www.w3.org/DTD/HTML4-strict.dtd\"><html><head></head><body></body></html>"
     },
     {
-        "name": "Doctype with publicId and systemId",
+        "name": "Doctype with publicId and systemId (legacy keyword-less form is treated as a bogus doctype)",
         "input": "<!DOCTYPE html html \"-//W3C//DTD HTML 4.01//EN\" \"http://www.w3.org/TR/html4/strict.dtd\"",
         "expected": "<!DOCTYPE html><html><head></head><body></body></html>"
     },
